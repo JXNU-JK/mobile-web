@@ -5,18 +5,16 @@
       <div class="userinfo-content-avatar">
         <span>头像</span>
         <div class="userinfo-content-avatar-right">
-          <div class="register-form-right">
-            <div class="register-upload-box">
-              <div class="img-box bg-bank">
-                <img v-lazy="userInfo.avatar" alt="">
-                  <upload
-                    :url="uploadUrl"
-                    @before="avatarBefore"
-                    @success="avatarSuccess"
-                    @error="avatarError"
-                  >
-                  </upload>
-              </div>
+          <div class="userinfo-content-avatar-right-upload">
+            <div class="userinfo-content-avatar-right-box">
+              <img v-lazy="userInfo.avatar" alt="">
+              <uploadCommon
+                :url="uploadUrl"
+                @before="avatarBefore"
+                @success="avatarSuccess"
+                @error="avatarError"
+              >
+              </uploadCommon>
             </div>
           </div>
         </div>
@@ -93,10 +91,12 @@ import * as local from '@/services/localData/localStorage.js'
 import { MessageBox, Toast } from 'mint-ui';
 import { formatDate } from '@/utils/dateUtils.js'
 import upload from '@/components/upload/upload.vue'
+import uploadCommon from 'upload-common'
 export default {
   components: {
     iHeader,
-    upload
+    upload,
+    uploadCommon
   },
   data () {
     return {
@@ -306,6 +306,20 @@ export default {
         float: right;
         height: 150px;
         line-height: 150px;
+        &-upload {
+          width: 100%;
+          height: 100%;
+        }
+        &-box {
+          width: 100%;
+          height: 100%;
+          display: block;
+          margin: 0 auto;
+          text-align: center;
+          box-sizing: border-box;
+          overflow: hidden;
+          position: relative;
+        }
         img {
           width: 90px;
           height: 90px;

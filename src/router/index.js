@@ -16,7 +16,7 @@ const userCenter = resolve => require.ensure([],
   () => resolve(require('@/page/usercenter/usercenter.vue')), 'usercenter')
 const userInfo = resolve => require.ensure([],
   () => resolve(require('@/page/usercenter/userInfo.vue')), 'usercenter')
-const testHisoty = resolve => require.ensure([],
+const testHistory = resolve => require.ensure([],
   () => resolve(require('@/page/usercenter/test-history.vue')), 'usercenter')
 const collectHistory = resolve => require.ensure([],
   () => resolve(require('@/page/usercenter/collect-history.vue')), 'usercenter')
@@ -28,7 +28,7 @@ const joke = resolve => require.ensure([],
 Vue.use(Router)
 
 const router = new Router({
-  base: '/mobile/',
+  base: '/joke/',
   routes: [
     {
       path: '/',
@@ -67,8 +67,8 @@ const router = new Router({
     },
     {
       path: '/history',
-      name: 'testHisoty',
-      component: testHisoty
+      name: 'testHistory',
+      component: testHistory
     },
     {
       path: '/collect',

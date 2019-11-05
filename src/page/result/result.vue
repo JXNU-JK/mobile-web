@@ -4,15 +4,15 @@
     <div class="top"></div>
     <div class="content">
       <div class="content-header">
-        <img src="../../assets/images/logo.jpg"/>
+        <img v-lazy="userInfo.avatar"/>
         <div class="content-header-right">
           <div class="content-header-right-top">
             <div></div>
-            <div>{{username}}</div>
+            <div>{{userInfo.nickname}}</div>
             <div style="cleat: both"></div>
           </div>
           <div class="tag-content">
-            <i-tag :title="item.tagName" v-for="item in resultData.tagList" :key="item.tagName"></i-tag>
+            <i-tag :title="item.tagName" v-for="item in tagList" :key="item.tagName"></i-tag>
           </div>
         </div>
       </div>
@@ -76,10 +76,10 @@
       <div class="content-layout-word">
         <div class="content-layout-word-item">
           <div></div>
-          <div><span v-if="isShowOther && resultData.resultList[1]">1.</span>{{resultData.resultList[0].resultText}}</div>
+          <div><span v-if="isShowOther && resultList[0] && resultList[1]">1.</span>{{resultList[0].resultText}}</div>
           <div style="clear: both;"></div>
         </div>
-        <div class="content-layout-word-other-item" :key="index" v-for="(item, index) in resultData.resultList" v-if="index !== 0 && isShowOther">
+        <div class="content-layout-word-other-item" :key="index" v-for="(item, index) in resultList" v-if="index !== 0 && isShowOther">
           <div></div>
           <div><span>{{index + 1}}.</span>{{item.resultText}}</div>
           <div style="clear: both;"></div>
@@ -95,7 +95,8 @@ import iHeader from '@/components/common/i-header.vue'
 import iTag from '@/components/common/i-tag.vue'
 import * as local from '@/services/localData/localStorage.js'
 import * as utils from '@/utils/dataUtils.js'
-const Base64 = require('js-base64').Base64
+import * as api from '@/services/api/api.js'
+import qs from 'qs'
 export default {
   components: {
     iHeader,
@@ -103,28 +104,38 @@ export default {
   },
   data () {
     return {
-      username: '',
       resultScore: '',
       testType: '',
-      resultData: {
-        resultList: [],
-        tagList: []
-      },
+      resultList: [],
+      tagList: [],
       isShowOther: false,
-      userId: ''
+      userId: '',
+      userInfo: {
+        avatar: '',
+        intro: '',
+        nickname: ''
+      }
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(to)
+    if (to.name === 'home' || to.name === 'testHistory') {
+      next()
+    } else {
+      next({
+        name: 'home',
+        replace: false
+      })
     }
   },
   created () {
     local.getUserInfo((res) => {
       if (res) {
-        this.username = JSON.parse(res).username
         this.userId = JSON.parse(res).userId
       }
     })
-    let detail = JSON.parse(Base64.decode(this.$route.query.detail))
-    this.resultScore = detail.resultScore
-    this.testType = detail.type
-    this.resultData = Object.assign({}, utils.getResultData(this.testType, this.resultScore))
+    this.getUserInfo()
+    this.getTestResult()
   },
   computed: {
     looMoreText () {
@@ -141,6 +152,42 @@ export default {
     },
     rightClick () {
 
+    },
+    getUserInfo() {
+      let params = {
+        action: 'getUserInfo',
+        userId : this.userId
+      }
+      this.axios.post(api.baseUrl, qs.stringify(params))
+      .then((res) => {
+        let data = res.data
+        if (data.resultCode === 200) {
+          this.userInfo.avatar = api.imgurl + data.data.avatar || ''
+          this.userInfo.nickname = data.data.nickname || ''
+          this.userInfo.intro = data.data.intro || ''
+        }
+      })
+      .catch((res) => {
+        console.log(res)
+      })
+    },
+    getTestResult() {
+      console.log9
+      let params = {
+        action: 'getTestResult',
+        testId: this.$route.query.testId
+      }
+      this.axios.post(api.baseUrl, qs.stringify(params))
+      .then((res) => {
+        let data = res.data
+        if (data.resultCode === 200) {
+          this.resultList = data.resultList
+          this.tagList = data.tagList
+        }
+      })
+      .catch((res) => {
+        console.log(res)
+      })
     }
   }
 }

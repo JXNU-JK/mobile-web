@@ -21,7 +21,6 @@ export default {
   },
   data() {
     return {
-      isWechat: false, // 是否是微信内置浏览器
       isUploading: false // 是否正在上传
     }
   },
@@ -107,6 +106,5 @@ export default {
   width: 100%;
   height: 100%;
   opacity: 0;
-  /* filter: opacity(0); */
 }
 </style>

@@ -14,7 +14,7 @@
     </div>
     <div class="usercenter-content">
       <div class="usercenter-content-menu">
-        <div @click="goTo('testHisoty')">
+        <div @click="goTo('testHistory')">
           <img src="@/assets/images/mI1.png" />
           <div>测试记录</div>
         </div>
