@@ -28,7 +28,7 @@ const joke = resolve => require.ensure([],
 Vue.use(Router)
 
 const router = new Router({
-  base: '/joke/',
+  base: '/mobile/',
   routes: [
     {
       path: '/',
