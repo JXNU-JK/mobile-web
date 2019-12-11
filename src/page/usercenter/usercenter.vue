@@ -70,10 +70,9 @@ export default {
     },
     getUserInfo () {
       let params = {
-        action: 'getUserInfo',
         userId : this.userId
       }
-      this.axios.post(api.baseUrl, qs.stringify(params))
+      this.axios.post(api.baseUrl + 'member/getUserInfo', qs.stringify(params))
       .then((res) => {
         let data = res.data
         if (data.resultCode === 200) {

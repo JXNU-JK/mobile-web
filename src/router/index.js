@@ -95,7 +95,8 @@ router.beforeEach((to, from, next) => {
       if (res && JSON.parse(res) === true) {
         next()
       } else {
-        window.location.href = '/mobile'
+        // window.location.href = '/mobile'
+        next()
       }
     })
   } else {

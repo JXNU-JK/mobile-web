@@ -66,12 +66,11 @@ export default {
         return
       }
       var params = {
-        action: 'login',
         username: this.loginForm.username,
         password: this.loginForm.password
       }
       this.isSubmiting = true
-      this.axios.post(api.baseUrl, qs.stringify(params))
+      this.axios.post(api.baseUrl + 'member/login', qs.stringify(params))
         .then((res) => {
           Indicator.close()
           this.isSubmiting = false
@@ -80,7 +79,7 @@ export default {
             local.setLoginState(true)
             let userInfo = {
               username: this.loginForm.username,
-              userId: data.msg
+              userId: data.data.id
             }
             local.setUserInfo(userInfo)
             this.$router.push({

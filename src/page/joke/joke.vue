@@ -40,14 +40,11 @@ export default {
       this.getJokeList()
     },
     getJokeList () {
-      let params = {
-        action: 'getJokeList'
-      }
-      this.axios.post(api.baseUrl, qs.stringify(params))
+      this.axios.get(api.baseUrl + 'joke/getJokeData')
       .then((res) => {
         let data = res.data
         if (data.resultCode === 200) {
-          this.jokeList = data.detail
+          this.jokeList = data.data
         }
       })
     }
